@@ -1,0 +1,18 @@
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+@tailwind components;
+
+@layer components {
+  .options {
+    @apply cursor-pointer hover:bg-gray-200 transition duration-100 py-1 px-3 ease-out rounded-md;
+  }
+}
