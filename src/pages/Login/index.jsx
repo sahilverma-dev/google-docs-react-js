@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import Button from "@material-tailwind/react/Button";
 
@@ -24,25 +24,24 @@ const Login = () => {
 
         signInWithPopup(auth, provider)
             .then(({ user }) => {
+                const docRef = doc(firestore, "users", `${user?.uid}`);
+                setDoc(
+                    docRef,
+                    {
+                        lastLogin: serverTimestamp(),
+                        name: user?.displayName,
+                        email: user?.email,
+                        number: user?.phoneNumber
+                    },
+                    { merge: true },
+                    (doc) => console.log(doc)
+                );
                 console.log(user);
                 setUser(user);
             })
             .catch((err) => console.log(err));
     };
-    const docRef = doc(firestore, "users", `${user?.uid}`);
 
-    useEffect(() => {
-        const unsub = setDoc(
-            docRef,
-            {
-                lastlogin: serverTimestamp(),
-                saved: [],
-            },
-            { merge: true },
-            (doc) => console.log(doc)
-        );
-        return () => unsub;
-    }, [user, docRef]);
     return (
         <>
             <div className="flex flex-col items-center justify-center h-100 min-h-screen">
