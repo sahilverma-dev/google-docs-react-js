@@ -19,6 +19,7 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 import { useHistory } from "react-router";
 import { AuthContext } from "../../context/firebase";
@@ -81,26 +82,18 @@ const Home = () => {
   );
 
   useEffect(() => {
-    const getData = async () => {
-      const docRef = collection(firestore, "userDocs", `${user?.uid}`, "docs");
-      //   const docSnap = await getDocs(docRef);
-      const q = query(docRef, orderBy("time", "desc"));
-      const docSnap = await getDocs(q);
-      //   console.log(docSnap);
-      if (docSnap) {
+    const unsub = onSnapshot(
+      collection(firestore, "userDocs", `${user?.uid}`, "docs"),
+      (snap) => {
         setUserDoc(
-          docSnap.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data(),
-            };
-          })
+          snap.docs?.map((doc) => ({
+            id: doc?.id,
+            ...doc.data(),
+          }))
         );
-      } else {
-        console.log("No such document!");
       }
-    };
-    getData();
+    );
+    return () => unsub();
   }, [user?.uid]);
   return (
     <>
@@ -108,9 +101,9 @@ const Home = () => {
       {model}
       <section
         style={{ background: "#f8f9fa" }}
-        className="bg-[#f8f9fa] pb-10 px-10 "
+        className="bg-[#f8f9fa] p-2 w-full mx-auto md:pb-10 md:px-10 "
       >
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl w-full mx-auto">
           <div className="py-6 flex items-center justify-between">
             <h2 className="text-gray-700">Start a new document</h2>
             <Button
@@ -136,7 +129,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="bg-white px-10 mb-20">
+      <section className="bg-white w-full md:px-10 md:mb-20">
         <div className="max-w-3xl mx-auto py-8 text-sm text-gray-700">
           <div className="flex p-4 items-center justify-between">
             <h2 className="font-medium flex-grow">My Document</h2>
