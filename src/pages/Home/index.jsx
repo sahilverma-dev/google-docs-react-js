@@ -14,11 +14,11 @@ import { useContext, useEffect, useState } from "react";
 import { firestore } from "../../fireabase/config";
 import {
   addDoc,
-  getDocs,
+//   getDocs,
   collection,
   serverTimestamp,
-  query,
-  orderBy,
+//   query,
+//   orderBy,
   onSnapshot,
 } from "firebase/firestore";
 import { useHistory } from "react-router";

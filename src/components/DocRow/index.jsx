@@ -3,7 +3,7 @@ import Button from "@material-tailwind/react/Button";
 import Icon from "@material-tailwind/react/Icon";
 import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
-import { doc, deleteDoc, collection } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { firestore } from "../../fireabase/config";
 import { AuthContext } from "../../context/firebase";
 
